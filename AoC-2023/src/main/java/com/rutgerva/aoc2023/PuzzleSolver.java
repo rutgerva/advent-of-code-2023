@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 public abstract class PuzzleSolver {
     private final BufferedReader bufferedReader;
     protected final String inputFile;
+
     protected PuzzleSolver(String inputFile) {
         this.bufferedReader = BufferedReaderHelper.build(inputFile);
         this.inputFile = inputFile;
@@ -15,5 +16,6 @@ public abstract class PuzzleSolver {
     protected BufferedReader getBufferedReader() {
         return this.bufferedReader;
     }
-    public abstract Integer solve();
+
+    public abstract <T extends Number> T solve();
 }
