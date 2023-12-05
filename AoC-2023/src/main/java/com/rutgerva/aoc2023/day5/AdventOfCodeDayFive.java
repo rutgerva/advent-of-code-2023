@@ -12,7 +12,7 @@ public class AdventOfCodeDayFive {
         PuzzleTwoSolver solver2 = new PuzzleTwoSolver(INPUT_FILE);
 
         System.out.println("The output of puzzle 1 is: " + solver1.solve());
-        //System.out.println("The output of puzzle 2 is: " + solver2.solve());
+        System.out.println("The output of puzzle 2 is: " + solver2.solve());
     }
 
 }

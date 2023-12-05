@@ -71,4 +71,15 @@ public class DayFiveUtils {
         }
         return toMap;
     }
+
+    public static Long mapSeedToLocation(Long seed) {
+        Long mappedValue = mapSourceToDestination(seed, seedToSoil);
+        //chain of mappings
+        mappedValue = mapSourceToDestination(mappedValue, soilToFert);
+        mappedValue = mapSourceToDestination(mappedValue, fertToWater);
+        mappedValue = mapSourceToDestination(mappedValue, waterToLight);
+        mappedValue = mapSourceToDestination(mappedValue, lightToTemp);
+        mappedValue = mapSourceToDestination(mappedValue, tempToHumidity);
+        return mapSourceToDestination(mappedValue, humidityToLocation);
+    }
 }

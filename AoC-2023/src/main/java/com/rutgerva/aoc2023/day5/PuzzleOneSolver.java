@@ -23,16 +23,7 @@ public class PuzzleOneSolver extends PuzzleSolver {
             List<Long> seedList = getSeedList();
             initializeMappings();
             for (Long seed : seedList) {
-                Long mappedValue = mapSourceToDestination(seed, seedToSoil);
-                //chain of mappings
-                mappedValue = mapSourceToDestination(mappedValue, soilToFert);
-                mappedValue = mapSourceToDestination(mappedValue, fertToWater);
-                mappedValue = mapSourceToDestination(mappedValue, waterToLight);
-                mappedValue = mapSourceToDestination(mappedValue, lightToTemp);
-                mappedValue = mapSourceToDestination(mappedValue, tempToHumidity);
-                mappedValue = mapSourceToDestination(mappedValue, humidityToLocation);
-                //add the actual location into a list of found locations
-                locations.add(mappedValue);
+                locations.add(mapSeedToLocation(seed));
             }
             return Collections.min(locations);
         } catch (IOException e) {
