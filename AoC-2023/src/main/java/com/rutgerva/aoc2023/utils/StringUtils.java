@@ -13,13 +13,27 @@ public class StringUtils {
 
 
     public static List<Long> extractListOfNumbersFromString(String line) {
-        Pattern pattern = Pattern.compile("\\d+");
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = getNumbersMatcher(line);
 
         return matcher.results()
                 .map(MatchResult::group)
                 .mapToLong(Long::parseLong)
                 .boxed()
                 .toList();
+    }
+
+    public static List<Integer> extractListOfIntegersFromString(String line) {
+        Matcher matcher = getNumbersMatcher(line);
+
+        return matcher.results()
+                .map(MatchResult::group)
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .toList();
+    }
+
+    private static Matcher getNumbersMatcher(String line) {
+        Pattern pattern = Pattern.compile("\\d+");
+        return pattern.matcher(line);
     }
 }
