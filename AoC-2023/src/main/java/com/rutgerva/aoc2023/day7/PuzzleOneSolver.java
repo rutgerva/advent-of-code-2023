@@ -3,6 +3,7 @@ package com.rutgerva.aoc2023.day7;
 import com.rutgerva.aoc2023.PuzzleSolver;
 import com.rutgerva.aoc2023.day7.models.Hand;
 import com.rutgerva.aoc2023.day7.models.HandType;
+import com.rutgerva.aoc2023.day7.utils.DaySevenUtils;
 import static com.rutgerva.aoc2023.day7.utils.DaySevenUtils.hands;
 import static com.rutgerva.aoc2023.day7.utils.DaySevenUtils.readInput;
 
@@ -20,6 +21,7 @@ public class PuzzleOneSolver extends PuzzleSolver {
         try {
             Integer result = 0;
             readInput(inputFile);
+            DaySevenUtils.cardStrengths = "23456789TJQKA";
             rank = hands.size();
 
             result += processHandType(HandType.FIVE_OF_A_KIND);

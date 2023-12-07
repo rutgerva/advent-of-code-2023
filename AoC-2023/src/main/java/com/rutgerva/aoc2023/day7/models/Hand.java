@@ -1,39 +1,37 @@
 package com.rutgerva.aoc2023.day7.models;
 
+import static com.rutgerva.aoc2023.day7.models.HandType.FIVE_OF_A_KIND;
+import static com.rutgerva.aoc2023.day7.models.HandType.FOUR_OF_A_KIND;
+import static com.rutgerva.aoc2023.day7.models.HandType.FULL_HOUSE;
+import static com.rutgerva.aoc2023.day7.models.HandType.ONE_PAIR;
+import static com.rutgerva.aoc2023.day7.models.HandType.THREE_OF_A_KIND;
+import com.rutgerva.aoc2023.day7.utils.DaySevenUtils;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Hand {
-    //labels by their position individually
-    private final Character firstLabel;
-    private final Character secondLabel;
-    private final Character thirdLabel;
-    private final Character fourthLabel;
-    private final Character fifthLabel;
     //entire hand represented as list to perform ordered operations on
-    private List<Character> cards;
+    private final List<Character> cards;
     // type of hand to determine rank later on
     @Getter
     private HandType handType;
     // bid of the hand
     @Getter
-    private Integer bid;
+    private final Integer bid;
+    private final Integer jokers;
 
     public Hand(String cards, Integer bid) {
         this.cards = cards.chars()
                 .mapToObj(c -> (char) c)
                 .toList();
 
-        firstLabel = this.cards.get(0);
-        secondLabel = this.cards.get(1);
-        thirdLabel = this.cards.get(2);
-        fourthLabel = this.cards.get(3);
-        fifthLabel = this.cards.get(4);
+        jokers = (int) this.cards.stream()
+                .filter(c -> c.equals('J'))
+                .count();
 
         this.bid = bid;
         //determine hand type after initialization of object
@@ -68,29 +66,40 @@ public class Hand {
 
     public static boolean isStrongerThanHandOfSameType(Hand toCheck, Hand competitor) {
 
-        if(!competitor.handType.equals(toCheck.handType)) {
-            throw new RuntimeException("Trying to compare strenght of hand on different hand types.");
+        if (!competitor.handType.equals(toCheck.handType)) {
+            throw new RuntimeException("Trying to compare strength of hand on different hand types.");
         }
 
-        for(int i = 0; i < toCheck.cards.size(); i++) {
+        for (int i = 0; i < toCheck.cards.size(); i++) {
             Integer myStrength = strength(toCheck.cards.get(i));
             Integer competitorStrength = strength(competitor.cards.get(i));
-            if( myStrength > competitorStrength)
+            if (myStrength > competitorStrength)
                 return true;
-            else if(myStrength < competitorStrength)
+            else if (myStrength < competitorStrength)
                 return false;
         }
         return true;
     }
 
     private static Integer strength(Character card) {
-        String ascendingStrengthOfCards = "23456789TJQKA";
-        return ascendingStrengthOfCards.indexOf(card);
+        return DaySevenUtils.cardStrengths.indexOf(card);
     }
 
     private int checkOccurrences(Character toCheck) {
         return (int) cards.stream()
                 .filter(c -> c.equals(toCheck))
                 .count();
+    }
+
+    public void promote() {
+        if (jokers > 0) {
+            this.handType = switch (handType) {
+                case HIGH_CARD -> ONE_PAIR;
+                case ONE_PAIR -> THREE_OF_A_KIND;
+                case TWO_PAIR -> jokers == 2 ? FOUR_OF_A_KIND : FULL_HOUSE;
+                case THREE_OF_A_KIND -> jokers == 3 || jokers == 1 ? FOUR_OF_A_KIND : FIVE_OF_A_KIND;
+                case FULL_HOUSE, FOUR_OF_A_KIND, FIVE_OF_A_KIND -> FIVE_OF_A_KIND;
+            };
+        }
     }
 }

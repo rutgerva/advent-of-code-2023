@@ -10,17 +10,21 @@ import java.util.Comparator;
 import java.util.List;
 
 public class DaySevenUtils {
-    public static List<String> input = new ArrayList<>();
+    public static List<String> input;
 
-    public static List<Hand> hands = new ArrayList<>();
+    public static List<Hand> hands;
+
+    public static String cardStrengths;
 
     public static void readInput(String inputFile) throws IOException {
         //Read file
+        input = new ArrayList<>();
         input = Files.readAllLines(Paths.get("src/main/resources/" + inputFile));
         initialize();
     }
 
     public static void initialize() {
+        hands = new ArrayList<>();
         for (String line : input) {
             String[] handWithBid = line.split(" ");
             hands.add(new Hand(handWithBid[0], Integer.parseInt(handWithBid[1])));
@@ -29,4 +33,13 @@ public class DaySevenUtils {
         hands.sort(Comparator.comparing(hand -> hand.getHandType().ordinal()));
     }
 
+    public static void promoteHands() {
+        for (Hand hand : hands) {
+            hand.promote();
+        }
+        //re-sort with new promotions
+        hands.sort(Comparator.comparing(hand -> hand.getHandType().ordinal()));
+    }
+
+    //249936761 too high
 }
