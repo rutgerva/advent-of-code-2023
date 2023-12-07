@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AdventOfCodeDaySix {
 
-    private static String INPUT_FILE = "aoc_day6_input.txt";
+    private static final String INPUT_FILE = "aoc_day6_input.txt";
 
     public static void main(String... args) {
         PuzzleOneSolver solver1 = new PuzzleOneSolver(INPUT_FILE);
