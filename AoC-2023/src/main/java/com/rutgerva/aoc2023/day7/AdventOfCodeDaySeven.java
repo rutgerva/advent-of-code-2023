@@ -1,13 +1,11 @@
 package com.rutgerva.aoc2023.day7;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
 public class AdventOfCodeDaySeven {
 
-    private static String INPUT_FILE = "aoc_day7_input.txt";
+    private static final String INPUT_FILE = "aoc_day7_input.txt";
 
     public static void main(String... args) {
+
         PuzzleOneSolver solver1 = new PuzzleOneSolver(INPUT_FILE);
         PuzzleTwoSolver solver2 = new PuzzleTwoSolver(INPUT_FILE);
 

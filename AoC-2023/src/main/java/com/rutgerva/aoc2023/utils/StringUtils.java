@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
+    public static final String SPACE = " ";
+
     private StringUtils() {
 
     }

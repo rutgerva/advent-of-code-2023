@@ -82,7 +82,7 @@ public class Hand {
     }
 
     private static Integer strength(Character card) {
-        return DaySevenUtils.cardStrengths.indexOf(card);
+        return DaySevenUtils.getCardStrengthsDefinition().indexOf(card);
     }
 
     private int checkOccurrences(Character toCheck) {
