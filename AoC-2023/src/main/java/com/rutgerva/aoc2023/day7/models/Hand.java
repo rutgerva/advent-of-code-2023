@@ -38,6 +38,15 @@ public class Hand {
         determineHandType();
     }
 
+    /**
+     * Determines the hand type of the current instance under the assumption a hand is 5 cards.
+     * Checks for unique amount of cards within the hand
+     * When 4 unique cards are found it implies there is 1 pair
+     * When 3 unique cards are found and either of these values occur 3 times in the hand, we have three of a kind, else we have two pairs
+     * When 2 unique cards are found and either of these values occurs 3 times in the hand, we have a full house else it must be four of a kind
+     * When 1 unique card is found it implies we have five of a kind
+     * In other cases we only have a high card
+     */
     private void determineHandType() {
         Set<Character> uniqueValues = new HashSet<>(cards);
 
@@ -91,6 +100,14 @@ public class Hand {
                 .count();
     }
 
+    /**
+     * Promotes the hand type of the instance based on the amount of jokers it contains.
+     * HIGH_CARD: There can be at most 1 joker, hence promotion to ONE_PAIR
+     * ONE_PAIR: There can be at most 2 jokers, hence only possible to promote to THREE_OF_A_KIND
+     * TWO_PAIR: There can be at most 2 jokers, given on of the pairs are jokers, promote to FOUR_OF_A_KIND else FULL_HOUSE
+     * THREE_OF_A_KIND: There can be at most 3 jokers, In case 3 or 1 jokers are present FOUR_OF_A_KIND can be formed, with 2 jokers promote to FIVE_OF_A_KIND
+     * Other: Any possible combination of present jokers will lead to FIVE_OF_A_KIND
+     */
     public void promote() {
         if (jokers > 0) {
             this.handType = switch (handType) {
