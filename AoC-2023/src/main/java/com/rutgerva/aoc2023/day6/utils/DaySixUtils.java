@@ -1,29 +1,24 @@
 package com.rutgerva.aoc2023.day6.utils;
 
+import com.rutgerva.aoc2023.day6.models.Race;
 import com.rutgerva.aoc2023.utils.StringUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaySixUtils {
-    public static List<String> input = new ArrayList<>();
-    public static List<Race> races;
+public final class DaySixUtils {
+    private static List<Race> races;
 
-    public static void readInput(String inputFile) throws IOException {
-        //Read file
-        input = Files.readAllLines(Paths.get("src/main/resources/" + inputFile));
+    private DaySixUtils() {
     }
 
-    public static void cleanInputFromSpaces() {
-        input = input.stream()
-                .map(s -> s.replaceAll(" ", ""))
+    public static List<String> cleanInputFromSpaces(List<String> toClean) {
+        return toClean.stream()
+                .map(s -> s.replaceAll(StringUtils.SPACE, StringUtils.EMPTY_STRING))
                 .toList();
     }
 
-    public static void initializeRaces() throws RuntimeException {
+    public static void initializeRaces(List<String> input) throws RuntimeException {
         races = new ArrayList<>();
         List<Long> times = StringUtils.extractListOfNumbersFromString(input.get(0));
         List<Long> distances = StringUtils.extractListOfNumbersFromString(input.get(1));
@@ -34,5 +29,14 @@ public class DaySixUtils {
         } else {
             throw new RuntimeException("Mismatch in races definitions");
         }
+    }
+
+    public static Long processRaces() {
+        long result = 1L;
+        for (Race race : races) {
+            long winningCombinations = race.winnableCombinations();
+            result *= winningCombinations;
+        }
+        return result;
     }
 }

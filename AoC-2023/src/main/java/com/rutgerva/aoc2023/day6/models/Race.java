@@ -1,4 +1,4 @@
-package com.rutgerva.aoc2023.day6.utils;
+package com.rutgerva.aoc2023.day6.models;
 
 public record Race(Long duration, Long distance) {
     public Long winnableCombinations() {

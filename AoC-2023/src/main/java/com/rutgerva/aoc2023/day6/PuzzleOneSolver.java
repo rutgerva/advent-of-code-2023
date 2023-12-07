@@ -1,10 +1,8 @@
 package com.rutgerva.aoc2023.day6;
 
 import com.rutgerva.aoc2023.PuzzleSolver;
-import static com.rutgerva.aoc2023.day6.utils.DaySixUtils.initializeRaces;
-import static com.rutgerva.aoc2023.day6.utils.DaySixUtils.races;
-import static com.rutgerva.aoc2023.day6.utils.DaySixUtils.readInput;
-import com.rutgerva.aoc2023.day6.utils.Race;
+import com.rutgerva.aoc2023.day6.utils.DaySixUtils;
+import com.rutgerva.aoc2023.utils.ReaderUtils;
 
 import java.io.IOException;
 
@@ -16,14 +14,9 @@ public class PuzzleOneSolver extends PuzzleSolver {
 
     public Long solve() {
         try {
-            Long result = 1L;
-            readInput(inputFile);
-            initializeRaces();
-            for (Race race : races) {
-                long winningCombinations = race.winnableCombinations();
-                result *= winningCombinations;
-            }
-            return result;
+            inputContent = ReaderUtils.readInputFile(inputFile);
+            DaySixUtils.initializeRaces(inputContent);
+            return DaySixUtils.processRaces();
         } catch (IOException e) {
             e.printStackTrace();
         }
