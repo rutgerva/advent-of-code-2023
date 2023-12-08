@@ -21,6 +21,13 @@ public final class DayEightUtils {
         buildListOfNodes(input.subList(2, input.size()));
     }
 
+    public static void updateNodesAsEndNodesWhenEndsWithZ() {
+        for (Node node : mapOfNodes) {
+            if (node.getCurrentNodeLabel().endsWith("Z"))
+                node.setEndNode(true);
+        }
+    }
+
     private static void buildListOfNodes(List<String> listOfNodes) {
         mapOfNodes = new ArrayList<>();
         Pattern pattern = Pattern.compile("([A-Z]{3})\\s*=\\s*\\(([A-Z]{3}),\\s*([A-Z]{3})\\)");
@@ -32,15 +39,17 @@ public final class DayEightUtils {
         }
     }
 
-    public static Integer getAmountOfStepsNeededToReachEnd() {
-        Integer steps = 0, index = 0;
+    public static Integer getAmountOfStepsNeededToReachEnd(String startNode) {
+        Integer steps = 0;
+        Integer index = 0;
         char[] instructionsAsChars = instructions.toCharArray();
         boolean endReached = false;
-        String currentNodeAsString = "AAA";
+        String currentNodeAsString = startNode;
         while (!endReached) {
             Node currentNode = findNodeBasedOnLabel(currentNodeAsString);
             currentNodeAsString = instructionsAsChars[index] == 'L' ? currentNode.navigateLeft() : currentNode.navigateRight();
-            if (currentNodeAsString.equals("ZZZ")) {
+            currentNode = findNodeBasedOnLabel(currentNodeAsString);
+            if (currentNode.isEndNode()) {
                 endReached = true;
             }
             index = index == instructions.length() - 1 ? 0 : ++index;
@@ -54,4 +63,35 @@ public final class DayEightUtils {
                 .filter(node -> node.getCurrentNodeLabel().equals(label))
                 .toList().get(0);
     }
+
+    private static List<Node> startingNodes() {
+        return mapOfNodes.stream()
+                .filter((node -> node.getCurrentNodeLabel().endsWith("A")))
+                .toList();
+    }
+
+    public static Long processAll() {
+        List<Node> startNodes = startingNodes();
+        List<Integer> stepsNeededPerNode = new ArrayList<>();
+
+        for (Node node : startNodes) {
+            stepsNeededPerNode.add(getAmountOfStepsNeededToReachEnd(node.getCurrentNodeLabel()));
+        }
+
+        Long result = (long) stepsNeededPerNode.get(0);
+        for(Integer steps: stepsNeededPerNode.subList(1, stepsNeededPerNode.size())) {
+            result = lcm(result, (long) steps);
+        }
+
+        return result;
+    }
+
+    private static long lcm(Long a, Long b) {
+        return (a * b) / gcd(a, b);
+    }
+
+    private static long gcd(Long a, Long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
 }

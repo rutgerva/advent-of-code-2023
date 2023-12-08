@@ -18,7 +18,7 @@ public class PuzzleOneSolver extends PuzzleSolver {
         try {
             inputContent = ReaderUtils.readInputFile(inputFile);
             DayEightUtils.initialize(inputContent);
-            return DayEightUtils.getAmountOfStepsNeededToReachEnd();
+            return DayEightUtils.getAmountOfStepsNeededToReachEnd("AAA");
         } catch (IOException e) {
             e.printStackTrace();
         }
