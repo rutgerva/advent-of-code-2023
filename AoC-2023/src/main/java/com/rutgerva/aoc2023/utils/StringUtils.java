@@ -39,4 +39,24 @@ public class StringUtils {
         Pattern pattern = Pattern.compile("\\d+");
         return pattern.matcher(line);
     }
+
+    public static List<Integer> extractListOfIntegersWithSignFromString(String line) {
+        Matcher matcher = Pattern.compile("-?\\d+").matcher(line);
+
+        return matcher.results()
+                .map(MatchResult::group)
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .toList();
+    }
+
+    public static List<Long> extractListOfLongWithSignFromString(String line) {
+        Matcher matcher = Pattern.compile("-?\\d+").matcher(line);
+
+        return matcher.results()
+                .map(MatchResult::group)
+                .mapToLong(Long::parseLong)
+                .boxed()
+                .toList();
+    }
 }
