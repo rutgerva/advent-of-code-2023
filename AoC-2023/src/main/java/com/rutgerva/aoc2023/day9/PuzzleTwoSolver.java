@@ -15,7 +15,8 @@ public class PuzzleTwoSolver extends PuzzleSolver {
     public Long solve() {
         try {
             inputContent = ReaderUtils.readInputFile(inputFile);
-            return 0L;
+            DayNineUtils.initialize(inputContent, true);
+            return DayNineUtils.processAllHistories();
         } catch (IOException e) {
             e.printStackTrace();
         }

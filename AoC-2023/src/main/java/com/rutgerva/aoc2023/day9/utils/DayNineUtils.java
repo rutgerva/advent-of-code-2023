@@ -8,17 +8,20 @@ import java.util.List;
 
 public final class DayNineUtils {
 
-    private static List<History> historiesToProcess = new ArrayList<>();
+    private static List<History> historiesToProcess;
 
     private DayNineUtils() {
     }
 
-    public static void initialize(List<String> input) {
+    public static void initialize(List<String> input, boolean reverse) {
+        historiesToProcess = new ArrayList<>();
         for (String line : input) {
             History history = new History();
-
             List<Long> historyValues = StringUtils.extractListOfLongWithSignFromString(line);
             history.setHistoryValues(historyValues);
+            if (reverse) {
+                history.reverseHistory();
+            }
             historiesToProcess.add(history);
         }
     }
