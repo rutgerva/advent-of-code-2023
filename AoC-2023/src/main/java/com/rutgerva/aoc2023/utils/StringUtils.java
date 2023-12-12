@@ -59,4 +59,20 @@ public class StringUtils {
                 .boxed()
                 .toList();
     }
+
+    public static char[][] listToGrid(List<String> list) {
+        return list.stream()
+                .map(String::toCharArray)
+                .toArray(char[][]::new);
+    }
+
+    public static char[][] transposeArray(char[][] originalArray) {
+        char[][] transposedArray = new char[originalArray[0].length][originalArray.length];
+        for (int row = 0; row < originalArray.length; row++) {
+            for (int column = 0; column < originalArray[0].length; column++) {
+                transposedArray[column][row] = originalArray[row][column];
+            }
+        }
+        return transposedArray;
+    }
 }
