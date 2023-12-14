@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 public class StringUtils {
 
@@ -74,5 +75,33 @@ public class StringUtils {
             }
         }
         return transposedArray;
+    }
+
+    /**
+     * Determines if two strings are different by exactly 1 character
+     *
+     * @param one string one to compare to string two
+     * @param two string two to compare to string one
+     * @return true if string one and two are off by exactly 1 character else returns false.
+     */
+    public static boolean isOneOff(String one, String two) {
+        if (one.length() != two.length())
+            return false;
+        long differences = IntStream.range(0, one.length())
+                .mapToObj(i -> new int[]{one.charAt(i), two.charAt(i)})
+                .filter(pair -> pair[0] != pair[1])
+                .count();
+
+        return differences == 1L;
+    }
+
+    public static int getOneOffIndex(String one, String two) {
+        if (isOneOff(one, two)) {
+            return IntStream.range(0, one.length())
+                    .mapToObj(i -> new int[]{one.charAt(i), two.charAt(i), i})
+                    .filter(pair -> pair[0] != pair[1]).iterator().next()[2];
+        } else {
+            throw new RuntimeException("Both strings have more or less than exactly one difference.");
+        }
     }
 }
