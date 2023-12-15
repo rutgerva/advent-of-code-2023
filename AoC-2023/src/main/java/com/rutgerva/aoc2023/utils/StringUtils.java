@@ -102,6 +102,12 @@ public class StringUtils {
         return differences == 1L;
     }
 
+    public static boolean onlyContainsChar(char c, String toCheck) {
+        return toCheck.chars()
+                .filter(i -> i != c)
+                .count() == 0;
+    }
+
     public static int getOneOffIndex(String one, String two) {
         if (isOneOff(one, two)) {
             return IntStream.range(0, one.length())

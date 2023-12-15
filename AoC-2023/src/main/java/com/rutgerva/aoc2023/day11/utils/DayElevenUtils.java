@@ -8,17 +8,35 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.stream.IntStream;
 
 public final class DayElevenUtils {
     public static final Character EMPTY_SPACE_SYMBOL = '.';
     public static final Character GALAXY_SYMBOL = '#';
     private static List<ImmutablePair<DataPoint, DataPoint>> galaxyPairs;
+    private static List<Integer> emptyRowsIndices;
+    private static List<Integer> emptyColumnIndices;
 
     private DayElevenUtils() {
     }
 
-    public static Integer process(List<String> input) {
-        input = expandGalaxy(input);
+    public static void findEmptyRows(List<String> input) {
+        emptyRowsIndices = new ArrayList<>(IntStream.range(0, input.size() - 1)
+                .filter(i -> StringUtils.onlyContainsChar('.', input.get(i)))
+                .boxed()
+                .toList());
+    }
+
+    public static void findEmptyColumns(List<String> input) {
+        List<String> transposedGrid = StringUtils.gridToList(StringUtils.transposeArray(StringUtils.listToGrid(input)));
+        emptyColumnIndices = new ArrayList<>(IntStream.range(0, input.size() - 1)
+                .filter(i -> StringUtils.onlyContainsChar('.', transposedGrid.get(i)))
+                .boxed()
+                .toList());
+    }
+
+    public static Long process(List<String> input, int expansionFactor) {
+
         char[][] galaxyGrid = StringUtils.listToGrid(input);
         List<DataPoint> galaxies = new ArrayList<>();
         int galaxiesFound = 0;
@@ -30,9 +48,19 @@ public final class DayElevenUtils {
             }
         }
         makeGalaxyPairs(galaxies);
-        Integer result = 0;
+        Long result = 0L;
         for (ImmutablePair<DataPoint, DataPoint> pair : galaxyPairs) {
             result += findShortestPath(pair.left, pair.right, input);
+            long rowExpansions = emptyRowsIndices.stream()
+                    .filter(i -> isBetweenRowsOfPair(i, pair.left, pair.right))
+                    .mapToInt(Integer::valueOf)
+                    .count();
+
+            long columnExpansion = emptyColumnIndices.stream()
+                    .filter(i -> isBetweenColumnsOfPair(i, pair.left, pair.right))
+                    .mapToInt(Integer::valueOf)
+                    .count();
+            result += (rowExpansions * expansionFactor) + (columnExpansion * expansionFactor);
         }
         return result;
     }
@@ -47,53 +75,14 @@ public final class DayElevenUtils {
         }
     }
 
-    private static List<String> expandGalaxy(List<String> input) {
-        List<String> tmp = expandRows(input);
-        return expandColumns(tmp);
+    private static boolean isBetweenRowsOfPair(int index, DataPoint point1, DataPoint point2) {
+        return (point1.getXCoordinate() < index && index < point2.getXCoordinate()) ||
+                (point2.getXCoordinate() < index && index < point1.getXCoordinate());
     }
 
-    private static List<String> expandColumns(List<String> input) {
-        char[][] galaxyGrid = StringUtils.listToGrid(input);
-        List<String> tmp = new ArrayList<>(input); //immutability issues
-        int columnsAdded = 0; // needed to take the already expanded grid into account everytime we add a column
-        for (int column = 0; column < galaxyGrid[0].length; column++) {
-            boolean noGalaxiesFound = true;
-            for (char[] chars : galaxyGrid) {
-                if (chars[column] == '#') {
-                    noGalaxiesFound = false;
-                    break;
-                }
-            }
-            if (noGalaxiesFound) {
-                final int indexToAdd = column + columnsAdded++;
-                tmp = tmp.stream()
-                        .map(line -> line.substring(0, indexToAdd) + EMPTY_SPACE_SYMBOL + line.substring(indexToAdd))
-                        .toList();
-            }
-        }
-        return tmp;
-    }
-
-    private static List<String> expandRows(List<String> input) {
-        char[][] galaxyGrid = StringUtils.listToGrid(input);
-        int rowsAdded = 0; // needed to take the already expanded grid into account everytime we add a column
-        for (int row = 0; row < galaxyGrid.length; row++) {
-            boolean noGalaxiesFound = true;
-            for (int column = 0; column < galaxyGrid[0].length; column++) {
-                if (galaxyGrid[row][column] == '#') {
-                    noGalaxiesFound = false;
-                    break;
-                }
-            }
-            if (noGalaxiesFound) {
-                input.add(row + rowsAdded++, createEmptyRow(galaxyGrid.length));
-            }
-        }
-        return input;
-    }
-
-    private static String createEmptyRow(Integer amountOfSpaces) {
-        return String.valueOf(EMPTY_SPACE_SYMBOL).repeat(Math.max(0, amountOfSpaces));
+    private static boolean isBetweenColumnsOfPair(int index, DataPoint point1, DataPoint point2) {
+        return (point1.getYCoordinate() < index && index < point2.getYCoordinate()) ||
+                (point2.getYCoordinate() < index && index < point1.getYCoordinate());
     }
 
     private static Integer findShortestPath(DataPoint pointA, DataPoint pointB, List<String> spaceMap) {

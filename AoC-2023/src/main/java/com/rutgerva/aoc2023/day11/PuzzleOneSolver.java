@@ -14,13 +14,15 @@ public class PuzzleOneSolver extends PuzzleSolver {
     }
 
 
-    public Integer solve() {
+    public Long solve() {
         try {
             inputContent = ReaderUtils.readInputFile(inputFile);
-            return DayElevenUtils.process(inputContent);
+            DayElevenUtils.findEmptyRows(inputContent);
+            DayElevenUtils.findEmptyColumns(inputContent);
+            return DayElevenUtils.process(inputContent, 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0;
+        return 0L;
     }
 }

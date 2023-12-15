@@ -15,8 +15,9 @@ public class PuzzleTwoSolver extends PuzzleSolver {
     public Long solve() {
         try {
             inputContent = ReaderUtils.readInputFile(inputFile);
-            DayElevenUtils.process(inputContent);
-            return 0L;
+            DayElevenUtils.findEmptyRows(inputContent);
+            DayElevenUtils.findEmptyColumns(inputContent);
+            return DayElevenUtils.process(inputContent, 1_000_000 - 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
