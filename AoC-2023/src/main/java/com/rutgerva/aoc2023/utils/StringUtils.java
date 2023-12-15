@@ -1,5 +1,6 @@
 package com.rutgerva.aoc2023.utils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -61,6 +62,12 @@ public class StringUtils {
                 .toList();
     }
 
+    public static List<String> gridToList(char[][] grid) {
+        return Arrays.stream(grid)
+                .map(String::valueOf)
+                .toList();
+    }
+
     public static char[][] listToGrid(List<String> list) {
         return list.stream()
                 .map(String::toCharArray)
@@ -103,5 +110,9 @@ public class StringUtils {
         } else {
             throw new RuntimeException("Both strings have more or less than exactly one difference.");
         }
+    }
+
+    public static String generateRepetitiveStringOfSymbols(int amount, char symbol) {
+        return String.valueOf(symbol).repeat(Math.max(0, amount));
     }
 }
