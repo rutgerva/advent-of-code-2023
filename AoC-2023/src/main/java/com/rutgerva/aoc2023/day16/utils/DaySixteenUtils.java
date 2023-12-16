@@ -28,8 +28,8 @@ public final class DaySixteenUtils {
         hasBeenTraversedInDirection = new ArrayList<>();
     }
 
-    public static boolean[][] getTraveled() {
-        return traveled;
+    public static char[][] getGrid() {
+        return floor;
     }
 
     public static void traverseGrid(int[] position, TravellingDirection travellingDirection) {
@@ -104,5 +104,15 @@ public final class DaySixteenUtils {
         return hasBeenTraversedInDirection
                 .stream()
                 .anyMatch(pair -> pair.left[0] == position[0] && pair.left[1] == position[1] && direction.equals(pair.right));
+    }
+
+    public static int getAmountOfEnergizedTiles() {
+        int count = 0;
+        for (int i = 0; i < traveled.length; i++) {
+            for (int y = 0; y < traveled[0].length; y++) {
+                count += traveled[i][y] ? 1 : 0;
+            }
+        }
+        return count;
     }
 }
