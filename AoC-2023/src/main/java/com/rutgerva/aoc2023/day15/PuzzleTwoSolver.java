@@ -2,7 +2,7 @@ package com.rutgerva.aoc2023.day15;
 
 import com.rutgerva.aoc2023.PuzzleSolver;
 import com.rutgerva.aoc2023.day15.utils.DayFifteenUtils;
-import com.rutgerva.aoc2023.day15.utils.models.Box;
+import com.rutgerva.aoc2023.day15.models.Box;
 import com.rutgerva.aoc2023.utils.ReaderUtils;
 
 import java.io.IOException;

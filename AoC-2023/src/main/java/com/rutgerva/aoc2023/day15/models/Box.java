@@ -1,4 +1,4 @@
-package com.rutgerva.aoc2023.day15.utils.models;
+package com.rutgerva.aoc2023.day15.models;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
