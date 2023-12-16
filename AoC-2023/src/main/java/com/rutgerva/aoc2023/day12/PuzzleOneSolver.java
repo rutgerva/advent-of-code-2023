@@ -21,6 +21,7 @@ public class PuzzleOneSolver extends PuzzleSolver {
         try {
             Long result = 0L;
             inputContent = ReaderUtils.readInputFile(inputFile);
+            DayTwelveUtils.clearCache();
             for (String s : inputContent) {
                 String [] conditionAndGroup = s.split(StringUtils.SPACE);
                 result += DayTwelveUtils.countPermutations(conditionAndGroup[0], StringUtils.extractListOfIntegersFromString(s));

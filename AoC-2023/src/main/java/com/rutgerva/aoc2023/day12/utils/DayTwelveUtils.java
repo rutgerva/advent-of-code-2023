@@ -3,15 +3,27 @@ package com.rutgerva.aoc2023.day12.utils;
 import static com.rutgerva.aoc2023.day12.enums.ConditionSymbol.BROKEN;
 import static com.rutgerva.aoc2023.day12.enums.ConditionSymbol.OPERATIONAL;
 import static com.rutgerva.aoc2023.day12.enums.ConditionSymbol.UNKNOWN;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class DayTwelveUtils {
+    private static Map<ImmutablePair<String, List<Integer>>, Long> cache;
 
     private DayTwelveUtils() {
     }
 
+    public static void clearCache() {
+        cache = new HashMap<>();
+    }
+
     public static long countPermutations(String condition, List<Integer> groups) {
+        ImmutablePair conditionWithGroup = new ImmutablePair(condition, groups);
+        //If this condition is already found once, return it
+        if (cache.containsKey(conditionWithGroup))
+            return cache.get(conditionWithGroup);
         //End condition of the recursion
         if (condition.isBlank())
             return groups.isEmpty() ? 1 : 0; // check if all groups are processed, if so valid combo
@@ -42,6 +54,7 @@ public final class DayTwelveUtils {
             }
 
         }
+        cache.put(conditionWithGroup, permutations);
         return permutations;
     }
 }
